@@ -4,9 +4,11 @@ from flask import jsonify, request, session
 app = Flask(__name__)
 app.secret_key = 'Drmhze6EPcv0fN_81Bj-nA'
 
+
 @app.before_request
 def do_something():
     # 这里的代码会在每个请求处理前执行
+    print(request.cookies)
     pass
 
 
