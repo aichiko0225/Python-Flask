@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>{% block title %}Template - HelloFlask{% endblock %}</title> {% block styles %}{% endblock %} {% endblock %}
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+        </ul>
+    </nav>
+    <main>{% block content %}{% endblock %} </main>
+    <footer> {% block footer %} ... {% endblock %} </footer> {% block scripts %}{% endblock %}
+</body>
+</html>

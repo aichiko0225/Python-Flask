@@ -4,3 +4,6 @@ itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
 Werkzeug==1.0.0
+flask_wtf==0.14.3
+# flask_ckeditor==0.4.3
+# wtforms==2.2.1
