@@ -7,3 +7,4 @@ Werkzeug==1.0.0
 flask_wtf==0.14.3
 # flask_ckeditor==0.4.3
 # wtforms==2.2.1
+flask-sqlalchemy==2.4.1

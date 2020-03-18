@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for,flash
+from flask import Flask, render_template, redirect, url_for, flash
 from forms import LoginForm
 
 app = Flask(__name__)
@@ -10,15 +10,10 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/form_1')
-def form_1():
-    return render_template('form_1.html')
-
-
 @app.route('/basic', methods=['GET', 'POST'])
 def basic():
     form = LoginForm()
-    if form.validate():
+    if form.validate_on_submit():
         username = form.username.data
         flash('Welcome home, %s!' % username)
         return redirect(url_for('index'))
@@ -28,7 +23,7 @@ def basic():
 @app.route('/bootstrap', methods=['GET', 'POST'])
 def bootstrap():
     form = LoginForm()
-    if form.validate():
+    if form.validate_on_submit():
         username = form.username.data
         flash('Welcome home, %s!' % username)
         return redirect(url_for('index'))
