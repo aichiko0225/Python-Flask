@@ -116,5 +116,88 @@ class Article(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
 
 
+# one to one
+class Country(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), unique=True)
+    capital = db.relationship('Capital', uselist=False)  # collection -> scalar
+
+
+class Capital(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), unique=True)
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
+    country = db.relationship('Country')  # scalar
+
+
+# one to many + bidirectional relationship
+class Writer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    books = db.relationship('Book', back_populates='writer')
+
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), index=True)
+    writer_id = db.Column(db.Integer, db.ForeignKey('writer.id'))
+    writer = db.relationship('Writer', back_populates='books')
+
+
+# 尽管使用backref非常方便，但通常来说“显式好过隐式”，所以我们 应该尽量使用back_populates定义双向关系。
+# 为了便于理解，在本书的示例程序中都将使用back_populates来建立双向关系。
+# one to many + bidirectional relationship + use backref to declare bidirectional relationship
+class Singer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(70), unique=True)
+    songs = db.relationship('Song', backref='singer')
+
+
+class Song(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), index=True)
+    singer_id = db.Column(db.Integer, db.ForeignKey('singer.id'))
+
+
+# many to one
+class Citizen(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(70), unique=True)
+    city_id = db.Column(db.Integer, db.ForeignKey('city.id'))
+    city = db.relationship('City')
+
+
+class City(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), unique=True)
+
+
+# many to many with association table
+association_table = db.Table('association',
+                             db.Column('student_id', db.Integer, db.ForeignKey('student.id')),
+                             db.Column('teacher_id', db.Integer, db.ForeignKey('teacher.id'))
+                             )
+
+
+class Student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(70), unique=True)
+    grade = db.Column(db.String(20))
+    teachers = db.relationship('Teacher',
+                               secondary=association_table,
+                               back_populates='students')  # collection
+
+
+class Teacher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(70), unique=True)
+    office = db.Column(db.String(20))
+    students = db.relationship('Student',
+                               secondary=association_table,
+                               back_populates='teachers')  # collection
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=8888)
+    db.create_all()
+
