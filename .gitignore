@@ -137,3 +137,4 @@ dmypy.json
 # Ignore all local history of files
 .history
 .DS_Store
+*/.DS_Store
